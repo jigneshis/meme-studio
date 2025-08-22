@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meme Studio</title>
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Anton&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="./icons/favicon.svg" class="logo" alt="logo" />
+      <span>Meme Studio</span>
+    </div>
+    <nav class="top-actions">
+      <label class="btn ghost file">
+        <input id="fileInput" type="file" accept="image/*" />
+        Upload Image
+      </label>
+      <button id="newBtn" class="btn ghost" title="New (N)">New</button>
+      <button id="saveBtn" class="btn ghost" title="Save (Ctrl/Cmd+S)">Save</button>
+      <button id="exportBtn" class="btn primary" title="Export (Ctrl/Cmd+E)">Export</button>
+      <button id="installBtn" class="btn" hidden>Install</button>
+      <button id="helpBtn" class="btn ghost">Help</button>
+    </nav>
+  </header>
+
+  <main class="workspace">
+    <aside class="sidebar left">
+      <section class="panel">
+        <h3>Canvas</h3>
+        <div class="grid two">
+          <label>Width <input id="canvasW" type="number" min="64" max="8192" value="1080"></label>
+          <label>Height <input id="canvasH" type="number" min="64" max="8192" value="1080"></label>
+        </div>
+        <div class="grid two">
+          <label>Background <input id="bgColor" type="color" value="#000000"></label>
+          <label>Aspect
+            <select id="aspect">
+              <option value="free">Free</option>
+              <option value="1:1">1:1</option>
+              <option value="4:5">4:5</option>
+              <option value="9:16">9:16</option>
+              <option value="16:9">16:9</option>
+            </select>
+          </label>
+        </div>
+        <div class="grid two">
+          <button id="fitBtn" class="btn">Fit</button>
+          <button id="resetViewBtn" class="btn">Reset View</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Image</h3>
+        <div class="grid two">
+          <button id="addImageBtn" class="btn">Add Image</button>
+          <label class="btn file">
+            <input id="imageInput" type="file" accept="image/*" />
+            From File
+          </label>
+        </div>
+        <div class="grid three">
+          <button id="flipHBtn" class="btn ghost">Flip H</button>
+          <button id="flipVBtn" class="btn ghost">Flip V</button>
+          <button id="rotateBtn" class="btn ghost">Rotate 90°</button>
+        </div>
+        <details>
+          <summary>Filters</summary>
+          <label>Brightness <input id="fltBrightness" type="range" min="0" max="2" step="0.01" value="1"></label>
+          <label>Contrast <input id="fltContrast" type="range" min="0" max="2" step="0.01" value="1"></label>
+          <label>Saturation <input id="fltSaturation" type="range" min="0" max="2" step="0.01" value="1"></label>
+          <label>Blur <input id="fltBlur" type="range" min="0" max="20" step="0.5" value="0"></label>
+          <label>Grayscale <input id="fltGray" type="range" min="0" max="1" step="0.01" value="0"></label>
+        </details>
+      </section>
+
+      <section class="panel">
+        <h3>Text</h3>
+        <button id="addTextBtn" class="btn">Add Caption</button>
+        <label>Content <textarea id="textContent" rows="3" placeholder="Type your caption"></textarea></label>
+        <div class="grid two">
+          <label>Font
+            <select id="fontFamily">
+              <option>Anton</option>
+              <option>Inter</option>
+              <option>Arial</option>
+              <option>Courier New</option>
+            </select>
+          </label>
+          <label>Size <input id="fontSize" type="number" min="8" max="256" value="64"></label>
+        </div>
+        <div class="grid two">
+          <label>Color <input id="fontColor" type="color" value="#ffffff"></label>
+          <label>Stroke <input id="strokeColor" type="color" value="#000000"></label>
+        </div>
+        <div class="grid two">
+          <label>Stroke W <input id="strokeWidth" type="number" min="0" max="20" value="6"></label>
+          <label>Shadow <input id="shadow" type="checkbox" checked></label>
+        </div>
+        <div class="grid two">
+          <label>Align
+            <select id="align">
+              <option value="center">Center</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+          </label>
+          <label>Uppercase <input id="upper" type="checkbox" checked></label>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Stickers / Emoji</h3>
+        <div class="emoji" id="emojiPanel">😀 😎 😂 🤣 🥳 😭 ❤️ 🔥 💀 👀 💯 🤌 🚀 🐍 ✨ 🧠 🍿 🫡 🙏</div>
+        <label class="btn file small">
+          <input id="stickerInput" type="file" accept="image/*" />
+          Upload Sticker
+        </label>
+      </section>
+
+      <section class="panel">
+        <h3>Export</h3>
+        <label>Format
+          <select id="exportFormat">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WEBP</option>
+          </select>
+        </label>
+        <label>Quality <input id="exportQuality" type="range" min="0.1" max="1" step="0.05" value="0.95"></label>
+        <label>Watermark <input id="watermark" type="checkbox"></label>
+        <button id="downloadBtn" class="btn primary">Download</button>
+        <div class="grid two">
+          <button id="exportProjectBtn" class="btn ghost">Export Project</button>
+          <label class="btn ghost file">
+            <input id="importProjectInput" type="file" accept="application/json" />
+            Import Project
+          </label>
+        </div>
+      </section>
+    </aside>
+
+    <section class="canvas-wrap">
+      <div class="ruler" id="ruler"></div>
+      <canvas id="canvas" width="1080" height="1080"></canvas>
+      <div class="hud" id="hud"></div>
+      <div class="zoom">
+        <button id="zoomOut" class="btn">−</button>
+        <span id="zoomLabel">100%</span>
+        <button id="zoomIn" class="btn">+</button>
+      </div>
+    </section>
+
+    <aside class="sidebar right">
+      <section class="panel">
+        <h3>Layers</h3>
+        <ul id="layers" class="layers"></ul>
+        <div class="grid three">
+          <button id="layerUp" class="btn ghost">Up</button>
+          <button id="layerDown" class="btn ghost">Down</button>
+          <button id="duplicateLayer" class="btn ghost">Duplicate</button>
+        </div>
+        <div class="grid two">
+          <button id="lockLayer" class="btn">Lock/Unlock</button>
+          <button id="hideLayer" class="btn">Hide/Show</button>
+        </div>
+        <button id="deleteLayer" class="btn danger">Delete</button>
+      </section>
+
+      <section class="panel">
+        <h3>History</h3>
+        <div class="grid two">
+          <button id="undoBtn" class="btn">Undo</button>
+          <button id="redoBtn" class="btn">Redo</button>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <dialog id="helpDialog">
+    <h3>Help</h3>
+    <p>Upload an image or drop it onto the canvas. Add captions/emoji, drag to move, wheel to zoom, Shift+drag a corner handle to rotate, or use the rotate button. Export when done.</p>
+    <button class="btn" id="closeHelp">Close</button>
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>
